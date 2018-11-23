@@ -55,6 +55,7 @@ describe('ngb-dropdown', () => {
     jasmine.addMatchers(jasmineMatchers);
     TestBed.configureTestingModule({declarations: [TestComponent], imports: [NgbDropdownModule]});
   });
+  // console.log('it works!');
 
   it('should be closed and down by default', () => {
     const html = `
@@ -68,6 +69,8 @@ describe('ngb-dropdown', () => {
 
     const fixture = createTestComponent(html);
     const compiled = fixture.nativeElement;
+
+    console.log(compiled);
 
     expect(compiled).not.toBeShown();
   });

@@ -1,8 +1,5 @@
 // Configuration used for local testing and Travis CI
 
-const reporters = process.env.TRAVIS ? ['dots'] : ['progress'];
-const browsers = process.env.TRAVIS ? ['ChromeHeadlessNoSandbox'] : ['Chrome'];
-
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -25,12 +22,12 @@ module.exports = function (config) {
         flags: ['--no-sandbox']
       }
     },
-    reporters,
+    reporters: ['progress'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers,
+    browsers : ['ChromeHeadless'],
     singleRun: false,
     browserNoActivityTimeout: 20000
   });

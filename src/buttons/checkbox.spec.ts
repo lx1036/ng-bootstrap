@@ -1,12 +1,19 @@
 import {TestBed, ComponentFixture, async, fakeAsync, tick} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {createGenericTestComponent} from '../test/common';
 
 import {Component} from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import {NgbButtonsModule} from './buttons.module';
 import {NgbCheckBox} from './checkbox';
+
+
+function createGenericTestComponent<T>(html: string, type: {new (...args: any[]): T}): ComponentFixture<T> {
+  TestBed.overrideComponent(type, {set: {template: html}});
+  const fixture = TestBed.createComponent(type);
+  fixture.detectChanges();
+  return fixture as ComponentFixture<T>;
+}
 
 const createTestComponent = (html: string) =>
     createGenericTestComponent(html, TestComponent) as ComponentFixture<TestComponent>;
@@ -20,8 +27,11 @@ function getInput(nativeEl: HTMLElement): HTMLInputElement {
 }
 
 describe('NgbCheckBox', () => {
+  let index = 0;
 
   beforeEach(() => {
+    console.log(index++);
+
     TestBed.configureTestingModule(
         {declarations: [TestComponent], imports: [NgbButtonsModule, FormsModule, ReactiveFormsModule]});
   });
@@ -29,9 +39,16 @@ describe('NgbCheckBox', () => {
   describe('bindings', () => {
 
     it('should mark input as checked / unchecked based on model change (default values)', fakeAsync(() => {
-         const fixture =
-             createTestComponent(`<label ngbButtonLabel><input type="checkbox" ngbButton [ngModel]="model"></label>`);
+      // const fixture = createTestComponent(`<label ngbButtonLabel><input type="checkbox" ngbButton [ngModel]="model"></label>`);
 
+      /**
+       * Create a component with DOM
+       */
+      TestBed.overrideComponent(TestComponent, {set: {template: `<label ngbButtonLabel><input type="checkbox" ngbButton [ngModel]="model"></label>`}});
+      const fixture = TestBed.createComponent(TestComponent);
+      fixture.detectChanges();
+
+      // console.log(fixture.elementRef.nativeElement);
          fixture.componentInstance.model = true;
          fixture.detectChanges();
          tick();
@@ -45,7 +62,7 @@ describe('NgbCheckBox', () => {
          fixture.detectChanges();
          expect(getInput(fixture.debugElement.nativeElement).checked).toBeFalsy();
          expect(getLabel(fixture.debugElement.nativeElement)).not.toHaveCssClass('active');
-       }));
+    }));
 
 
     it('should mark input as checked / unchecked based on model change (custom values)', fakeAsync(() => {

@@ -10,5 +10,10 @@ describe('ngb-tooltip-config', () => {
     expect(config.container).toBeUndefined();
     expect(config.disableTooltip).toBe(false);
     expect(config.tooltipClass).toBeUndefined();
+
+
+
+    console.log('a');
+
   });
 });
